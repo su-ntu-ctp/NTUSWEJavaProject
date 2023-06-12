@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error</title>
+  </head>
+  <body>
+    <h1>Error</h1>
+    <p>There was an unexpected error:</p>
+    <p>Error message: <span th:text="${error.message}"></span></p>
+    <p>Error status: <span th:text="${error.status}"></span></p>
+    <p>Timestamp: <span th:text="${timestamp}"></span></p>
+  </body>
+</html>
