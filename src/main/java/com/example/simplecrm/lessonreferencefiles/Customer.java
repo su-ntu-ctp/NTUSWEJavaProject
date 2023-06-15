@@ -1,4 +1,4 @@
-package com.example.simplecrm;
+package com.example.simplecrm.lessonreferencefiles;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

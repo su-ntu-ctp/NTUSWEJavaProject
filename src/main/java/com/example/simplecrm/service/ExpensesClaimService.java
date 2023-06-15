@@ -3,6 +3,9 @@ package com.example.simplecrm.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.simplecrm.model.ExpensesClaim;
+import com.example.simplecrm.repository.ExpensesClaimRepository;
+
 import java.util.List;
 
 @Service
@@ -19,7 +22,7 @@ public class ExpensesClaimService {
     return expensesClaimRepository.findAll();
   }
 
-  public ExpensesClaim getExpenseById(Long id) {
+  public ExpensesClaim getExpenseById(int id) {
     return expensesClaimRepository.findById(id).orElse(null);
   }
 
@@ -27,7 +30,7 @@ public class ExpensesClaimService {
     return expensesClaimRepository.save(expense);
   }
 
-  public ExpensesClaim updateExpense(Long id, ExpensesClaim expense) {
+  public ExpensesClaim updateExpense(int id, ExpensesClaim expense) {
     ExpensesClaim existingExpense = expensesClaimRepository.findById(id).orElse(null);
     if (existingExpense != null) {
       // Update the properties of the existing expense with the new values
@@ -48,7 +51,7 @@ public class ExpensesClaimService {
     }
   }
 
-  public boolean deleteExpense(Long id) {
+  public boolean deleteExpense(int id) {
     ExpensesClaim existingExpense = expensesClaimRepository.findById(id).orElse(null);
     if (existingExpense != null) {
       expensesClaimRepository.delete(existingExpense);

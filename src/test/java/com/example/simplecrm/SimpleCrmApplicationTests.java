@@ -2,7 +2,6 @@ package com.example.simplecrm;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,25 +9,32 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.example.simplecrm.model.Employee;
+import com.example.simplecrm.repository.EmployeeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+// Integration test - test whole of interaction of the app
+// mockMvc to simulate web requests
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc // this will configure mockMvc for us
 class SimpleCrmApplicationTests {
+
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
-	private CustomerRepository customerRepository;
+	private EmployeeRepository employeeRepository;
 
 	@Autowired
-	private ObjectMapper objectmapper; // Used to convert Java objects to JSON and vice versa
+	private ObjectMapper objectmapper;
 
 	@BeforeEach
 	void setup() {
-		customerRepository.save(new Customer(1, "John", "Doe", "john@a.com", "12345678", "Manager", 1990));
-		customerRepository.save(new Customer(2, "Tony", "Stark", "tony@a.com", "12345678", "Manager", 1990));
+		employeeRepository.save(new Employee(1, "John", "Doe", "john@a.com", "HR", "123456"));
+		employeeRepository.save(new Employee(2, "Tony", "Stark", "tony@a.com", "Operations", "123456"));
 	}
 
 	@Test
@@ -36,39 +42,46 @@ class SimpleCrmApplicationTests {
 	}
 
 	@Test
-	void getCustomerByIdTest() throws Exception {
+	void getEmployeeByIdTest() throws Exception {
 		// Step 1: Build a GET request to /customers/1
-		RequestBuilder request = MockMvcRequestBuilders.get("/customers/1");
+		RequestBuilder request = MockMvcRequestBuilders.get("/employees/1");
+
 		// Step 2: Perform the request and get the result
 		mockMvc.perform(request)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.id").value(1));
+
 		// jsonPath is a way to get a specific field from the JSON response
+
 	}
 
 	@Test
-	public void getAllCustomersTest() throws Exception {
-		// Step 1: Build the request to get all customers
-		RequestBuilder request = MockMvcRequestBuilders.get("/customers");
+	public void getAllEmployeesTest() throws Exception {
+		// Step 1: Build the request to get all users
+		RequestBuilder request = MockMvcRequestBuilders.get("/employees");
 
 		// Step 2: Perform the request and get the result
 		mockMvc.perform(request)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.size()").value(2));
+
 	}
 
 	@Test
-	public void validCustomerCreationTest() throws Exception {
-		// Step 1: Build the request to create a customer
-		Customer newCustomer = new Customer(3, "Bruce", "Banner", "bruce@a.com", "12345678", "Scientist", 1990);
-		// Step 2: Convert the Java object to JSON
-		String newCustomerAsJson = objectmapper.writeValueAsString(newCustomer);
-		// Step 3: Build the request to create a customer
-		RequestBuilder request = MockMvcRequestBuilders.post("/customers")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(newCustomerAsJson);
+	public void validEmployeeCreationTest() throws Exception {
+		// Step 1: Build the request to create a employee
+		Employee newEmployee = new Employee(3, "Bruce", "Banner", "bruce@a.com", "Finance", "123456");
+
+			// Step 2: Convert the Java object to JSON
+			String newUserAsJson = objectmapper.writeValueAsString(newEmployee);
+
+			// Step 3: Build the request to create a employee
+		RequestBuilder request = MockMvcRequestBuilders.post("/employees")
+		.contentType(MediaType.APPLICATION_JSON)
+		.content(newUserAsJson);
+
 		// Step 4: Perform the request and get the result
 		mockMvc.perform(request)
 				.andExpect(status().isCreated())
@@ -76,21 +89,25 @@ class SimpleCrmApplicationTests {
 				.andExpect(jsonPath("$.id").value(3))
 				.andExpect(jsonPath("$.firstName").value("Bruce"))
 				.andExpect(jsonPath("$.lastName").value("Banner"));
+
 	}
 
 	@Test
-	public void invalidCustomerCreationTest() throws Exception {
-		// Step 1: Create an invalid Customer
-		Customer invalidCustomer = new Customer(4, "   ", "Banner", "  ", "12345678", "Scientist", 1990);
+	public void invalidUserCreationTest() throws Exception {
+		// Step 1: Create an invalid employee
+		Employee invalidEmployee = new Employee(4, "   ", "Banner", "  ", "Finance", "123456" );
+
 		// Step 2: Convert the Java object to JSON
-		String invalidCustomerAsJson = objectmapper.writeValueAsString(invalidCustomer);
+		String invalidEmployeeAsJson = objectmapper.writeValueAsString(invalidEmployee);
+
 		// Step 3: Build the request
-		RequestBuilder request = MockMvcRequestBuilders.post("/customers")
+		RequestBuilder request = MockMvcRequestBuilders.post("/employees")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(invalidCustomerAsJson);
-		// Step 4: Perform the request and get the result
-		mockMvc.perform(request)
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+				.content(invalidEmployeeAsJson);
+
+				// Step 4: Perform the request and get the result
+				mockMvc.perform(request)
+				.andExpect(status().isBadRequest());
 	}
+
 }

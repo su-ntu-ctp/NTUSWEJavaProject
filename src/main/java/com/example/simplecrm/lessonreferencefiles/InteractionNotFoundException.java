@@ -1,4 +1,4 @@
-package com.example.simplecrm;
+package com.example.simplecrm.lessonreferencefiles;
 
 public class InteractionNotFoundException extends RuntimeException {
   public InteractionNotFoundException(int id) {

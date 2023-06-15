@@ -10,7 +10,7 @@ public class ExpensesClaim {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "expense_id")
-  private Long expenseId;
+  private int expenseId;
 
   @Column(name = "created_date")
   private LocalDateTime createdDate;
@@ -59,11 +59,11 @@ public class ExpensesClaim {
     this.personRejected = personRejected;
   }
 
-  public Long getExpenseId() {
+  public int getExpenseId() {
     return expenseId;
   }
 
-  public void setExpenseId(Long expenseId) {
+  public void setExpenseId(int expenseId) {
     this.expenseId = expenseId;
   }
 

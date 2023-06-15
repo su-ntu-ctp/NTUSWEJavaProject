@@ -1,6 +1,5 @@
-package com.example.simplecrm;
+package com.example.simplecrm.lessonreferencefiles;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface CustomerService {
