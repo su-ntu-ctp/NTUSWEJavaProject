@@ -1,16 +1,16 @@
 package com.example.simplecrm.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "expenses_claims")
+@Table(name = "expenses_claim")
 public class ExpensesClaim {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "expense_id")
-  private int expenseId;
+  private Long expenseId;
 
   @Column(name = "created_date")
   private LocalDateTime createdDate;
@@ -59,11 +59,11 @@ public class ExpensesClaim {
     this.personRejected = personRejected;
   }
 
-  public int getExpenseId() {
+  public Long getExpenseId() {
     return expenseId;
   }
 
-  public void setExpenseId(int expenseId) {
+  public void setExpenseId(Long expenseId) {
     this.expenseId = expenseId;
   }
 
@@ -127,10 +127,6 @@ public class ExpensesClaim {
     return typeOfClaim;
   }
 
-  public void setTypeOfClaim(String typeOfClaim) {
-    this.typeOfClaim = typeOfClaim;
-  }
-
   public String getRemarks() {
     return remarks;
   }
@@ -145,5 +141,9 @@ public class ExpensesClaim {
 
   public void setPersonRejected(String personRejected) {
     this.personRejected = personRejected;
+  }
+
+  public void setTypeOfClaim(String typeOfClaim) {
+    this.typeOfClaim = typeOfClaim;
   }
 }
